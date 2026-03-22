@@ -1,24 +1,40 @@
 package com.sanskar.a1;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
+
+    // Intent action strings - A2 will listen for these
+    public static final String ATTRACTIONS_INTENT =
+            "com.sanskar.a1.SHOW_ATTRACTIONS";
+    public static final String RESTAURANTS_INTENT =
+            "com.sanskar.a1.SHOW_RESTAURANTS";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+
+        Button btnAttractions = findViewById(R.id.buttonAttractions);
+        Button btnRestaurants = findViewById(R.id.buttonRestaurants);
+
+        btnAttractions.setOnClickListener(view -> {
+            Toast.makeText(this, "Loading Chicago Attractions...", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(ATTRACTIONS_INTENT);
+            intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+            sendBroadcast(intent);
+        });
+
+        btnRestaurants.setOnClickListener(view -> {
+            Toast.makeText(this, "Loading Chicago Restaurants...", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(RESTAURANTS_INTENT);
+            intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+            sendBroadcast(intent);
         });
     }
 }
